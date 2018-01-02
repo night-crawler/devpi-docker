@@ -1,0 +1,27 @@
+version: '3'
+
+networks:
+  default:
+  nginx-network:
+    external: true
+
+volumes:
+  index-data:
+
+services:
+  devpi:
+    image: ncrawler/devpi
+    hostname: devpi
+    command: devpi
+#    ports:
+#     - "3141:3141"
+    volumes:
+     - index-data:/application/server
+    env_file:
+      - .env
+    restart: always
+    networks:
+      default:
+        aliases: [devpi.test]
+      nginx-network:
+        aliases: [devpi.test]
