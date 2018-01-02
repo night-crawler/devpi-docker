@@ -62,3 +62,22 @@ devpi install pytest
 pip install django
 
 ```
+
+#### Usage with SSL
+
+Let's assume volumes of `docker-compose-letsencrypt-nginx-proxy-companion` are mounted to 
+`./data`:
+
+```bash
+pwd
+# /docker/docker-compose-letsencrypt-nginx-proxy-companion]
+
+ls ./data
+# certs  conf.d  html  htpasswd  vhost.d
+```
+
+Put into `./data/vhost.d/devpi.test_location`:
+```ini
+proxy_set_header X-outside-url $scheme://$host:$server_port;
+proxy_set_header X-Real-IP $remote_addr;
+```
