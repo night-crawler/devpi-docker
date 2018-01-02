@@ -81,3 +81,22 @@ Put into `./data/vhost.d/devpi.test_location`:
 proxy_set_header X-outside-url $scheme://$host:$server_port;
 proxy_set_header X-Real-IP $remote_addr;
 ```
+
+#### Usage with Basic HTTP Auth
+
+In mounted data volume create `htpasswd/$VIRTUAL_HOST`: 
+```bash
+cd /docker/docker-compose-letsencrypt-nginx-proxy-companion/data/htpasswd/
+htpasswd -nbs user ChangeMePass >> devpi.test
+```
+
+Change links in your `~/.pip/pip.conf` according to scheme
+`http://username:password@server/whatever/`:
+
+```ini
+[global]
+index-url = https://user:ChangeMePass@devpi.test/root/pypi/+simple/
+
+[search]
+index = https://user:ChangeMePass@devpi.test/root/pypi/
+```
